@@ -1,2 +1,2 @@
 # sdk-for-tb
-openwrt sdk
+openwrt sdk for tb
