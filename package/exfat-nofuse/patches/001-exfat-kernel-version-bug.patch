@@ -1,0 +1,15 @@
+diff -urN a/exfat_nls.c b/exfat_nls.c
+--- a/exfat_nls.c	2016-02-23 19:48:01.152906023 +0800
++++ b/exfat_nls.c	2016-02-23 19:47:26.080905431 +0800
+@@ -353,7 +353,11 @@
+ 		lossy = TRUE;
+ 
+ 	if (nls == NULL) {
++	#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
++		i = utf8s_to_utf16s(p_cstring, MAX_NAME_LENGTH, uniname);
++	#else
+ 		i = utf8s_to_utf16s(p_cstring, MAX_NAME_LENGTH, UTF16_HOST_ENDIAN, uniname, MAX_NAME_LENGTH);
++	#endif	
+ 		for (j = 0; j < i; j++)
+ 			SET16_A(upname + j * 2, nls_upper(sb, uniname[j]));
+ 		uniname[i] = '\0';
