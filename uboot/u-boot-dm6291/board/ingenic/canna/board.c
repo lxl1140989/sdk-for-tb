@@ -598,6 +598,7 @@ int led_init(unsigned char wifimode)
 	gpio_request(sys_led , "led-sys");
 	gpio_direction_output(sys_led , 0);
 	gpio_set_value(sys_led, 0);
+/*	
 	udelay(200000);
 	gpio_set_value(sys_led, 1);
 	udelay(200000);
@@ -606,6 +607,8 @@ int led_init(unsigned char wifimode)
 	gpio_set_value(sys_led, 1);
 	udelay(200000);
 	gpio_set_value(sys_led, 0);
+*/
+
 /*	udelay(200000);
 	gpio_set_value(sys_led, 1);
 */
