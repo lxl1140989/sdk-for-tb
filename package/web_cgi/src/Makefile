@@ -1,7 +1,8 @@
 TARGET = SysInfo SysUpgrade config_param check_param set_mac StmUpgrade ArtUpgrade BootUpgrade sysupdate mm
 
 CFG_TARGET = 	cfg nor check_stm8 KeepChannel updatefw mnt_pc_dc ctl_wifi_for_3_0 auto_connect \
-				mp_disk set_wifimode_to_boot save_wifi nvram_cfg erase_boot_flag sys_upgrade set_sys_flag
+				mp_disk set_wifimode_to_boot save_wifi nvram_cfg erase_boot_flag sys_upgrade set_sys_flag \
+				led_ctl
 
 LED_TARGET = led_control_reload led_on
 
@@ -31,6 +32,8 @@ test_uart:test_uart.o
 led_control_reload:led_control_reload.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 led_on:led_on.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+led_ctl:led_ctl.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 cfg:cfg.o uci_for_cgi.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ -luci

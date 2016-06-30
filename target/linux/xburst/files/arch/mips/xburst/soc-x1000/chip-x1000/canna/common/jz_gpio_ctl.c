@@ -17,6 +17,7 @@
 
 //#define LED_D3		GPIO_PB(1)   /* evb board */
 #define LED_D3 			GPIO_PC(25)
+#define SYS_BTN			GPIO_PC(23)
 
 #define START_BTN			23
 #define WIFI_LED  			0
@@ -42,7 +43,7 @@
 #define GLED_OFF			0x20
 #define GLED_BLINK			0x22
 
-#define GET_START_BTN		0x30
+#define GET_SYS_BTN		0x30
 
 #define SPEAKER_ON			0x41
 #define SPEAKER_OFF			0x40
@@ -57,7 +58,7 @@ static unsigned int cmd=0;
 static int jz_gpio_init(void)
 {
 	int led=LED_D3;
-	printk(">>>>>>>>>> jz_gpio_ctl init <<<<<<<<<<<\n");
+	// printk(">>>>>>>>>> jz_gpio_ctl init <<<<<<<<<<<\n");
 	if (gpio_request(led, "led d3")) {
 		pr_err("ERROR: no led d3 pin available !!\n");
 		goto err;
@@ -66,6 +67,9 @@ static int jz_gpio_init(void)
 	}
 
 	gpio_set_value(led, 0);
+
+	gpio_request(SYS_BTN, "sys_btn");
+	gpio_direction_input(SYS_BTN);
 
 	return 0;
 err:
@@ -76,6 +80,7 @@ err:
 static long jz_gpio_ioctl(struct file *file, unsigned int action,unsigned long arg)
 {
 	cmd = action;
+	unsigned char btn_status;
 	
 	
 	//mod_timer(&timer_led_3g, jiffies + HZ*1000);
@@ -89,18 +94,14 @@ static long jz_gpio_ioctl(struct file *file, unsigned int action,unsigned long a
 		gpio_set_value(LED_D3, 1);
 		
 		break;
-#if 0
-	case RLED_BLINK:
-		mod_timer(&timer_red_led, jiffies + HZ/2);
-		break;
 
-	case GET_START_BTN:
-		btn_status=__gpio_get_value(START_BTN);
+	case GET_SYS_BTN:
+		btn_status=__gpio_get_value(SYS_BTN);
 		if (copy_to_user((void __user *)arg,&btn_status, sizeof(btn_status)))
 			return -EFAULT;
 		
 		break;
-#endif	
+
 	default:
 		
 		printk("Not supported action!\n");

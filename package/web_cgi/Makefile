@@ -59,7 +59,7 @@ define Package/web_cgi/install
 #	$(CP) $(PKG_BUILD_DIR)/bin/encrypt $(1)/bin/encrypt
 #	$(CP) $(PKG_BUILD_DIR)/bin/mm $(1)/bin/mm
 #	$(INSTALL_BIN) $(PKG_BUILD_DIR)/led_control_reload $(1)/bin/led_control_reload
-#	$(INSTALL_BIN) $(PKG_BUILD_DIR)/led_on $(1)/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/led_ctl $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/getsysinfo $(1)/usr/mips/cgi-bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/unbind $(1)/usr/mips/cgi-bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/proccgi.sh $(1)/usr/mips/cgi-bin/
