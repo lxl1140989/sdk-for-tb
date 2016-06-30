@@ -35,7 +35,7 @@
 
 
 #define LED_BLUE 			GPIO_PC(26)  //blue led , 5G
-#define WIFI_LED                GPIO_PC(25)  //green led , 2.4G
+#define WIFI_LED                GPIO_PC(26)  //green led , 2.4G
 
 static struct gpio_led gpio_leds[] = {
         {
