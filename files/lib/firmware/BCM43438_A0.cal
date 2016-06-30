@@ -16,7 +16,7 @@ xtalfreq=26000
 nocrc=1
 ag0=255
 aa2g=1
-ccode=ALL
+ccode=CN
 
 pa0itssit=0x20
 extpagain2g=0
