@@ -14,8 +14,8 @@ wifi_start() {
 	if [ "$ap_encrypt" != "none" ]; then
 		ap_key=$(uci get wireless.@wifi-iface[0].key)
 	fi
-	ifconfig wlan0 down
-	ifconfig wlan0 up
+	ifconfig mlan0 down
+	ifconfig mlan0 up
 	if [ "$wifi_mode" = "5g" ]; then
 		ap_ssid=${ap_ssid}_5G
 	fi
@@ -94,7 +94,7 @@ if [ "$client_sta" = "0" ]; then
 			killall wpa_supplicant
 			start_wpa_supplicant
 			killall udhcpc
-			udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+			udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 		elif [ "$dnsmasq_port" = "0" ]; then 
 			uci set dhcp.@dnsmasq[0].port=53
 			uci commit
@@ -104,7 +104,7 @@ if [ "$client_sta" = "0" ]; then
 			killall wpa_supplicant
 			start_wpa_supplicant
 			killall udhcpc
-			udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+			udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 		fi
 	elif [ "$scan_status" = "fail" ]; then
 		if [ "$dnsmasq_port" = "53" ]; then

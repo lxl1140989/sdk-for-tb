@@ -282,15 +282,19 @@ extern ap_list_info_t scan_ap_list_info;
 int get_scan_list_nl80211(char *ifname, ap_list_info_t *p_ap_list){
 	int i = 0;
 	int wifi_mode;
+	int err = 0;
 
 	int scan_argc = 2;
 	char **scan_argv;
 	scan_argv = calloc(scan_argc, sizeof(*scan_argv));
+	if(scan_argv == NULL){
+		err = -1;
+		goto EXIT1;
+	}
 	scan_argv[0] = ifname;
 	scan_argv[1] = "scan";
 	
 	struct nl80211_state nlstate;
-	int err = 0;
 	const struct cmd *cmd = NULL;
 
 	/* calculate command size including padding */
@@ -327,6 +331,9 @@ int get_scan_list_nl80211(char *ifname, ap_list_info_t *p_ap_list){
 EXIT2:
 	nl80211_cleanup(&nlstate);
 EXIT1:
+	if(scan_argv != NULL){
+		free(scan_argv);
+	}		
 	return err;
 }
 

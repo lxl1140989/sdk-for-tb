@@ -7,14 +7,14 @@ config interface loopback
 	option netmask	255.0.0.0
 
 config interface lan
-#	option ifname	wlan0
+#	option ifname	mlan0
 	option type 	bridge
 	option proto	static
 	option ipaddr	192.168.222.254
 	option netmask	255.255.255.0
 
 config interface wan
-#	option ifname	wlan0
+#	option ifname	mlan0
 	option proto	dhcp
 	option hostname airdisk
 

@@ -26,6 +26,6 @@ config 'save'
 	option 'qqsn' 'unknow'
 	option 'license' 'unknow'
 	option 'version_flag' '1'
-	option 'wifi_module' 'AP6212'
+	option 'wifi_module' 'MRVL8801'
 	option 'radio_band' 'single'
 

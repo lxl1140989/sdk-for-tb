@@ -17,8 +17,8 @@ ap_encrypt=$(uci get wireless.@wifi-iface[0].encryption)
 if [ "$ap_encrypt" != "none" ]; then
 	ap_key=$(uci get wireless.@wifi-iface[0].key)
 fi
-ifconfig wlan0 down
-ifconfig wlan0 up
+ifconfig mlan0 down
+ifconfig mlan0 up
 if [ "$wifi_mode" = "5g" ]; then
 	ap_ssid=${ap_ssid}_5G
 fi
@@ -72,7 +72,7 @@ if [ "$scan_status" = "ok" ]; then
 	killall wpa_supplicant
 	start_wpa_supplicant
 	killall udhcpc
-	udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script
+	udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script
 else
 	killall wpa_supplicant
 	killall udhcpc

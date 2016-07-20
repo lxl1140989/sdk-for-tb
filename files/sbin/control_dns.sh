@@ -13,37 +13,12 @@ wifi_start() {
 	if [ "$ap_encrypt" != "none" ]; then
 		ap_key=$(uci get wireless.@wifi-iface[0].key)
 	fi
-	ifconfig wlan0 down
+	uaputl bss_stop
 	sleep 3
-	ifconfig wlan0 up
-	if [ "$wifi_mode" = "5g" ]; then
-		ap_ssid=${ap_ssid}_5G
-	fi
-
-	if [ "$ap_encrypt" = "none" ]; then
-		if [ "$wifi_mode" = "2g" ]; then
-			dhd_helper ssid $ap_ssid hidden n bgnmode bgn chan $ch2g amode open emode none
-		else
-			dhd_helper ssid $ap_ssid hidden n chan $ch5g amode open emode none
-		fi
-		
-	else
-		if [ "$wifi_mode" = "2g" ]; then
-			dhd_helper ssid $ap_ssid bgnmode bgn chan $ch2g amode wpa2psk emode aes key $ap_key
-		else
-			dhd_helper ssid $ap_ssid chan $ch5g amode wpa2psk emode aes key $ap_key
-		fi
-	fi
-	if [ "$wifi_mode" = "5g" ]; then
-		wl down
-		wl chanspec $ch5g/80
-		wl up
-	fi
-
-	ifconfig wl0.1 $lan_ip up
+	iwpriv uap0 bssstart
 }
 
-ip route del default dev wlan0
+ip route del default dev mlan0
 local scan_status
 client_sta=$(uci get wireless.@wifi-iface[1].disabled)
 dnsmasq_port=$(uci get dhcp.@dnsmasq[0].port)
@@ -58,7 +33,7 @@ if [ "$client_sta" = "0" ]; then
 				killall wpa_supplicant
 				start_wpa_supplicant
 				killall udhcpc
-				udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+				udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 			elif [ "$dnsmasq_port" = "0" ]; then 
 				uci set dhcp.@dnsmasq[0].port=53
 				uci commit
@@ -68,7 +43,7 @@ if [ "$client_sta" = "0" ]; then
 				killall wpa_supplicant
 				start_wpa_supplicant
 				killall udhcpc
-				udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+				udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 			fi
 		elif [ "$scan_status" = "fail" ]; then
 			if [ "$dnsmasq_port" = "53" ]; then
@@ -83,10 +58,11 @@ if [ "$client_sta" = "0" ]; then
 		fi
 	else
 		if [ "$dnsmasq_port" = "53" ]; then
+#			wifi_start
 			killall wpa_supplicant
-			start_wpa_supplicant
 			killall udhcpc
-			udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+			start_wpa_supplicant
+			udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 		elif [ "$dnsmasq_port" = "0" ]; then 
 			uci set dhcp.@dnsmasq[0].port=53
 			uci commit
@@ -94,9 +70,9 @@ if [ "$client_sta" = "0" ]; then
 			dnsmasq -C /etc/dnsmasq/dnsmasq.conf -p 53 -k &
 			wifi_start
 			killall wpa_supplicant
-			start_wpa_supplicant
 			killall udhcpc
-			udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+			start_wpa_supplicant
+			udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 		fi
 	fi
 elif [ "$client_sta" = "1" ]; then

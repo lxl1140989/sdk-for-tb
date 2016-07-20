@@ -2,7 +2,7 @@
 . /lib/netifd/netifd-wireless.sh
 . /lib/netifd/hostapd.sh
 
-ifname=wlan0
+ifname=mlan0
 
 wpa_supplicant_prepare_conf() {
 	local ifname="$1"
@@ -84,7 +84,7 @@ EOF
 
 
 start_wpa_supplicant() {
-	wpa_supplicant_prepare_conf "$ifname" nl80211
+	wpa_supplicant_prepare_conf "$ifname" wext
 	wpa_supplicant_generate_conf "$ifname"
 	wpa_supplicant_run "$ifname" ${hostapd_ctrl:+-H $hostapd_ctrl}
 }

@@ -487,7 +487,7 @@ int get_wifi_connect_info()
 	int chars_read; 
 	int ret=0; 
 	memset( buffer, 0, 512 ); 
-	read_fp = popen("ifconfig | grep wlan0", "r");
+	read_fp = popen("ifconfig | grep mlan0", "r");
 	if(read_fp!=NULL)
 	{
 		chars_read = fread(buffer, sizeof(char), 512-1, read_fp); 
@@ -506,7 +506,7 @@ int get_wifi_connect_info()
 		return 1;
 
 	memset( buffer, 0, 512 ); 
-	read_fp = popen("wl -i wlan0 assoclist", "r");
+	read_fp = popen("wl -i mlan0 assoclist", "r");
 	if(read_fp!=NULL)
 	{
 		chars_read = fread(buffer, sizeof(char), 512-1, read_fp); 
@@ -818,7 +818,7 @@ int main()
 			system("killall udhcpc");
 			system("killall dnsmasq");
 			system("killall wpa_supplicant");
-			system("ifconfig wlan0 down");
+			system("ifconfig mlan0 down");
 			int status;
 			ret = notify_server_release_disk(RELEASE_DISK, &status);
 			if(ret == 0 && status == 0){

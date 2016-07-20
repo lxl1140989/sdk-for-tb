@@ -3,7 +3,7 @@
 /sbin/ifconfig $interface $ip broadcast $broadcast netmask $subnet up
 #ip route add default gw $router
 #ip route add default via $router
-#ip route add default dev wlan0 via $ip
+#ip route add default dev mlan0 via $ip
 route add default gw $router
 
 # get dns information

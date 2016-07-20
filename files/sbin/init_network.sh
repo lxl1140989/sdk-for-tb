@@ -11,14 +11,14 @@ ap_encrypt=$(uci get wireless.@wifi-iface[0].encryption)
 if [ "$ap_encrypt" != "none" ]; then
 	ap_key=$(uci get wireless.@wifi-iface[0].key)
 fi
-ifconfig wlan0 up
+
 if [ "$wifi_mode" = "5g" ]; then
 	ap_ssid=${ap_ssid}_5G
 fi
 
 if [ "$ap_encrypt" = "none" ]; then
 	if [ "$wifi_mode" = "2g" ]; then
-		dhd_helper ssid "$ap_ssid" hidden n bgnmode bgn chan $ch2g amode open emode none
+		uaputl sys_cfg_ssid "$ap_ssid"
 	else
 		dhd_helper ssid "$ap_ssid" hidden n chan $ch5g amode open emode none
 	fi
@@ -35,14 +35,16 @@ if [ "$wifi_mode" = "5g" ]; then
 	wl chanspec $ch5g/80
 	wl up
 fi
+#wl country CN
 
-ifconfig wl0.1 $lan_ip up
+ifconfig uap0 $lan_ip up
+iwpriv uap0 bssstart
 echo 1 > /sys/class/leds/wifi\:led/brightness
 
 
 
 #iptables -F -t nat
-iptables -t nat -A POSTROUTING -s 192.168.222.0/24 -o wlan0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.222.0/24 -o mlan0 -j MASQUERADE
 iptables -A FORWARD -s 0/0 -d 0/0 -j ACCEPT
 
 if [ ! -d "/tmp/dnsmasq.d" ]; then
@@ -65,14 +67,14 @@ if [ "$client_sta" = "0" ]; then
 		fi
 		dnsmasq -C /etc/dnsmasq/dnsmasq.conf -p 53 -k &
 		start_wpa_supplicant
-		udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+		udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 	elif [ "$scan_status" = "fail" ]; then
 		dnsmasq -C /etc/dnsmasq/dnsmasq.conf -p 53 -k &
 		start_wpa_supplicant
-		udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+		udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 		sleep 10
-		hasConnect=$(iwconfig wlan0 | grep "Access Point: Not-Associated")
-		wlan1Cnt=`ip route | grep wlan0 | wc -l`
+		hasConnect=$(iwconfig mlan0 | grep "Access Point: Not-Associated")
+		wlan1Cnt=`ip route | grep mlan0 | wc -l`
 
 		if [ "$wlan1Cnt" = "2" ] && [ -z "$hasConnect" ]; then
 			echo "client is connected"
@@ -86,7 +88,10 @@ if [ "$client_sta" = "0" ]; then
 			killall wpa_supplicant
 			killall udhcpc
 		fi
-		
+	else 
+		dnsmasq -C /etc/dnsmasq/dnsmasq.conf -p 53 -k &
+		start_wpa_supplicant
+		udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &	
 	fi
 elif [ "$client_sta" = "1" ]; then
 	if [ "$dnsmasq_port" = "53" ]; then

@@ -500,7 +500,7 @@ int getssid(xmlNodePtr tag, char *retstr)
 	}
 	else
 		NULL;
-	strcpy(ifname,"wlan0");
+	strcpy(ifname,"mlan0");
 	cgi_get_channel(ifname, channel);  								//channel
 	strcpy(uci_option_str,"wireless.@wifi-iface[0].key");  			//password
 	uci_get_option_value(uci_option_str,password);
@@ -595,7 +595,7 @@ int getRemoteAP(xmlNodePtr tag, char *retstr)
 	}
 	else
 		NULL;
-	strcpy(ifname,"wlan1");
+	strcpy(ifname,"mlan0");
 	cgi_get_channel(ifname, channel);  //channel
 	strcpy(uci_option_str,"wireless.@wifi-iface[1].key");  //password
 	uci_get_option_value(uci_option_str,password);
@@ -887,9 +887,10 @@ int getScan(xmlNodePtr tag, char *retstr)
 	strcpy(uci_option_str,"factoryconfig.@save[0].wifi_module"); 
 	uci_get_option_value(uci_option_str,wifi_module);
 	memset(uci_option_str,'\0',64);
+	uci_free_context(ctx);
 	if(!strcmp(wifi_module,"AP6181"))
 		{
-		system("iw wlan0 scan | sed -e 's#(on wlan0# (on wlan0#g' | awk -f /etc/iwscan.awk >/tmp/aplist.txt");
+		system("iw mlan0 scan | sed -e 's#(on mlan0# (on mlan0#g' | awk -f /etc/iwscan.awk >/tmp/aplist.txt");
 		//sleep(1);
 		
 		do
@@ -975,7 +976,7 @@ int getScan(xmlNodePtr tag, char *retstr)
 	
 	//system("killall -9 wpa_supplicant >/dev/null 2>&1");
 	
-	cgi_scan("wlan0", retstr);
+	cgi_scan("mlan0", retstr);
 	
 	//system("udhcpc -t 0 -i wlan1 -H pisen -b -p /var/run/dhcp-wlan1.pid -O rootpath -R >/dev/null &");
 	//system("wifi >/dev/null 2>&1");
@@ -2439,7 +2440,7 @@ int setJoinWired(xmlNodePtr tag, char *retstr)  //wlan1 disabled=1;network resta
 			system("uci set network.wan.workmode=0");
 			system("uci commit");
 			system("brctl delif br-lan eth0");
-			system("ifconfig wlan1 down");
+			system("ifconfig mlan0 down");
 			system("killall udhcpc >/dev/null 2>&1");
 			system("udhcpc -t 0 -i eth0  -b -p /var/run/dhcp-eth0.pid -O rootpath -R >/dev/null &");
 			goto quit;
@@ -3288,7 +3289,7 @@ int setClient(xmlNodePtr tag, char *retstr)
 			strcpy(enable_config,"0");
 			//strcpy(htmode,"HT20");
 			if(shutdown_client_in_system)
-				system("ifconfig wlan1 up");
+				system("ifconfig mlan0 up");
 		}
 		else if(!strcmp(enable,"OFF"))
 		{
@@ -3296,7 +3297,7 @@ int setClient(xmlNodePtr tag, char *retstr)
 			strcpy(enable_config,"1");
 			//strcpy(htmode,"HT40+");
 			system("touch /tmp/shutdown_client_in_system");
-			system("ifconfig wlan1 down");
+			system("ifconfig mlan0 down");
 			//system("touch /tmp/manul_shutdown_client");
 		}
 		

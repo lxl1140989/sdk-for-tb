@@ -1,4 +1,4 @@
-#iw wlan0 scan|sed -e 's#(on wlan0# (on wlan0#g' |awk -f /etc/iwscan.awk >/tmp/aplist.txt
+#iw mlan0 scan|sed -e 's#(on mlan0# (on mlan0#g' |awk -f /etc/iwscan.awk >/tmp/aplist.txt
 BEGIN {
 	system("rm /tmp/scan.done");
 	("uci get wifilist.number2g.num")|getline l; #print l;

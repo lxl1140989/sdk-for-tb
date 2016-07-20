@@ -9,7 +9,7 @@ ap_encrypt=$(uci get wireless.@wifi-iface[0].encryption)
 if [ "$ap_encrypt" != "none" ]; then
 	ap_key=$(uci get wireless.@wifi-iface[0].key)
 fi
-#ifconfig wlan0 up
+#ifconfig mlan0 up
 
 #if [ "$ap_encrypt" = "none" ]; then
 #	dhd_helper ssid $ap_ssid hidden n bgnmode bgn chan $radio_channel amode open emode none
@@ -21,7 +21,7 @@ fi
 #killall dnsmasq
 #dnsmasq -C /etc/dnsmasq/dnsmasq.conf -k &
 
-#iptables -t nat -A POSTROUTING -s 192.168.222.0/24 -o wlan0 -j MASQUERADE
+#iptables -t nat -A POSTROUTING -s 192.168.222.0/24 -o mlan0 -j MASQUERADE
 #iptables -A FORWARD -s 0/0 -d 0/0 -j ACCEPT
 
 #this function is in /lib/netifd/wpa_setup.sh
@@ -29,6 +29,6 @@ killall wpa_supplicant
 killall udhcpc
 start_wpa_supplicant
 
-udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 
 

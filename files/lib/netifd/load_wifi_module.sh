@@ -13,6 +13,10 @@ load_wifi_module() {
 		insmod /lib/modules/3.0.8/bcm/bcmdhd_ap6255.ko
 	elif [ "$WIFI_MODULE" = "AP6212" ]; then
 		insmod /lib/modules/3.0.8/bcm/bcmdhd_ap6212.ko
+	elif [ "$WIFI_MODULE" = "MRVL8801" ]; then
+		insmod /lib/modules/3.0.8/mrvl/8801/mlan.ko
+		insmod /lib/modules/3.0.8/mrvl/8801/sd8801.ko auto_ds=2 ps_mode=2 mac_addr=$(cat /etc/mac.txt)
+
 	fi
 
 }

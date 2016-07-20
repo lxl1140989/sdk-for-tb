@@ -12,15 +12,15 @@ if [ "$ap_encrypt" != "none" ]; then
 	ap_key=$(uci get wireless.@wifi-iface[0].key)
 fi
 
-ifconfig wlan0 down
-ifconfig wlan0 up
+uaputl bss_stop
+
 if [ "$wifi_mode" = "5g" ]; then
 	ap_ssid=${ap_ssid}_5G
 fi
 
 if [ "$ap_encrypt" = "none" ]; then
 	if [ "$wifi_mode" = "2g" ]; then
-		dhd_helper ssid "$ap_ssid" hidden n bgnmode bgn chan $ch2g amode open emode none
+		uaputl sys_cfg_ssid "$ap_ssid"
 	else
 		dhd_helper ssid "$ap_ssid" hidden n chan $ch5g amode open emode none
 	fi
@@ -38,8 +38,9 @@ if [ "$wifi_mode" = "5g" ]; then
 	wl chanspec $ch5g/80
 	wl up
 fi
+#wl country CN
 
-ifconfig wl0.1 $lan_ip up
+iwpriv uap0 bssstart
 
 killall dnsmasq
 dnsmasq -C /etc/dnsmasq/dnsmasq.conf -k &
@@ -47,6 +48,6 @@ dnsmasq -C /etc/dnsmasq/dnsmasq.conf -k &
 killall wpa_supplicant
 start_wpa_supplicant
 killall udhcpc
-udhcpc -b -t 0 -i wlan0 -s /etc/udhcpc.script &
+udhcpc -b -t 0 -i mlan0 -s /etc/udhcpc.script &
 
 
