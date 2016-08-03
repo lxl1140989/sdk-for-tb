@@ -44,6 +44,7 @@ endef
 define Package/web_cgi/install
 	$(INSTALL_DIR) $(1)/usr/mips
 	$(INSTALL_DIR) $(1)/usr/mips/cgi-bin
+	$(INSTALL_DIR) $(1)/usr/mips/conf
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/usr/mips/cgi-bin/script
 	$(INSTALL_DIR) $(1)/bin
@@ -76,6 +77,8 @@ define Package/web_cgi/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/set_wifimode_to_boot $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sys_upgrade $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/set_sys_flag $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dm_router.conf $(1)/usr/mips/conf/
+
 
 	$(INSTALL_BIN) ./nrender/config_nrender $(1)/bin/
 	$(INSTALL_BIN) ./nrender/restore_factory_from_cfg $(1)/bin/

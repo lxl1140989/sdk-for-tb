@@ -38,6 +38,7 @@ fi
 #wl country CN
 
 ifconfig uap0 $lan_ip up
+uaputl sys_cfg_11n 1 0x113C
 iwpriv uap0 bssstart
 echo 1 > /sys/class/leds/wifi\:led/brightness
 

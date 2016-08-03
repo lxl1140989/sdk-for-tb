@@ -1475,7 +1475,7 @@ int getpower(xmlNodePtr tag, char *retstr)
 			power_status = POWER_LOW;	
 		break;
 	}
-	
+/*	
 	if(run_time == 5)
 	{
 		sprintf(retstr,"<Return status=\"false\">Get power level error!</Return>");
@@ -1484,6 +1484,8 @@ int getpower(xmlNodePtr tag, char *retstr)
 	{
 		sprintf(retstr,"<Power percent=\"%d\" status=\"%d\"></Power>",power_percent,power_status);
 	}
+*/
+	sprintf(retstr,"<Power percent=\"%d\" status=\"%d\"></Power>",power_percent,power_status);
 	return 0;
 }
 
