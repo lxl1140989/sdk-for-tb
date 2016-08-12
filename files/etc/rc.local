@@ -11,4 +11,7 @@ led_ctl &
 #init_network.sh
 #route add -net 224.0.0.0 netmask 255.255.255.0 wl0.1
 #airplay -a airdisk -d
+echo mass_storage > /sys/class/android_usb/android0/functions
+echo /dev/mmcblk0p4  >/sys/class/android_usb/android0/f_mass_storage/lun0/file
+echo 1 >/sys/class/android_usb/android0/enable
 exit 0
