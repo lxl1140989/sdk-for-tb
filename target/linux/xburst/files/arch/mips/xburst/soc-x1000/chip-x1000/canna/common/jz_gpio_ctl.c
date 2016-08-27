@@ -18,6 +18,7 @@
 //#define LED_D3		GPIO_PB(1)   /* evb board */
 #define LED_D3 			GPIO_PC(25)
 #define SYS_BTN			GPIO_PC(23)
+#define USB_SW			GPIO_PC(22)
 
 #define START_BTN			23
 #define WIFI_LED  			0
@@ -51,6 +52,9 @@
 #define DUT_EN_ON			0x51
 #define DUT_EN_OFF			0x50
 
+#define USB_CONNECT			0x61
+#define USB_DISCONNECT		0x60
+
 
 
 static unsigned int cmd=0;
@@ -70,6 +74,10 @@ static int jz_gpio_init(void)
 
 	gpio_request(SYS_BTN, "sys_btn");
 	gpio_direction_input(SYS_BTN);
+	
+	gpio_request(USB_SW, "usb_sw");
+	gpio_direction_output(USB_SW, 1);
+	gpio_set_value(USB_SW, 1);
 
 	return 0;
 err:
@@ -100,6 +108,14 @@ static long jz_gpio_ioctl(struct file *file, unsigned int action,unsigned long a
 		if (copy_to_user((void __user *)arg,&btn_status, sizeof(btn_status)))
 			return -EFAULT;
 		
+		break;
+		
+	case USB_CONNECT:
+		gpio_set_value(USB_SW, 1);
+		break;
+		
+	case USB_DISCONNECT:
+		gpio_set_value(USB_SW, 0);
 		break;
 
 	default:

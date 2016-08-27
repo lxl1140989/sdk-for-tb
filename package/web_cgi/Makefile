@@ -78,6 +78,7 @@ define Package/web_cgi/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sys_upgrade $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/set_sys_flag $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dm_router.conf $(1)/usr/mips/conf/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/usb_ctl $(1)/usr/sbin/
 
 
 	$(INSTALL_BIN) ./nrender/config_nrender $(1)/bin/
