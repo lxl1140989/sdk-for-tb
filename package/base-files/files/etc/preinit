@@ -6,6 +6,8 @@
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
+insmod /lib/modules/3.0.8/g_file_storage.ko stall=0 file=/dev/mmcblk0p4 removable=1
+
 pi_ifname=
 pi_ip=192.168.222.254
 pi_broadcast=192.168.222.255
