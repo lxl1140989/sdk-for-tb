@@ -1,0 +1,15 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2009-2012 OpenWrt.org
+
+START=85
+
+start() {
+        /usr/bin/check_repair &
+}
+stop() {
+        killall check_repair
+}
+restart() {
+		killall check_repair
+		/usr/bin/check_repair &
+}

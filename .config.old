@@ -1928,12 +1928,12 @@ CONFIG_BUSYBOX_CONFIG_SH_MATH_SUPPORT_64=y
 # CONFIG_BUSYBOX_CONFIG_KLOGD is not set
 CONFIG_BUSYBOX_CONFIG_LOGGER=y
 # CONFIG_PACKAGE_ca-certificates is not set
+CONFIG_PACKAGE_check_repair=y
 CONFIG_PACKAGE_check_reset=y
 # CONFIG_PACKAGE_dash is not set
 # CONFIG_PACKAGE_dm_discovery is not set
 # CONFIG_PACKAGE_dm_http is not set
 # CONFIG_PACKAGE_dm_monitor is not set
-CONFIG_PACKAGE_dm_router=y
 CONFIG_PACKAGE_dnsmasq=y
 # CONFIG_PACKAGE_dnsmasq-dhcpv6 is not set
 # CONFIG_PACKAGE_dnsmasq-full is not set
