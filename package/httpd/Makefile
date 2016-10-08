@@ -49,7 +49,7 @@ define Package/httpd/install
 	#$(CP) $(PKG_BUILD_DIR)/cgi-bin/* $(1)/usr/mips/cgi-bin/
 	$(CP) $(PKG_BUILD_DIR)/conf/* $(1)/usr/mips/conf/
 	$(CP) $(PKG_BUILD_DIR)/icons/* $(1)/usr/mips/icons/
-	$(CP) $(PKG_BUILD_DIR)/www_for_airdisk/* $(1)/usr/mips/www/
+	#$(CP) $(PKG_BUILD_DIR)/www_for_airdisk/* $(1)/usr/mips/www/
 	$(CP) $(PKG_BUILD_DIR)/user.passwd $(1)/usr/mips/
 	$(CP) $(PKG_BUILD_DIR)/script/* $(1)/etc/init.d/
 	#$(CP) $(PKG_BUILD_DIR)/lib/* $(1)/lib
