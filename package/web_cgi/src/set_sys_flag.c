@@ -73,6 +73,7 @@ int main(int argc, char **argv)
 		if(p_data->boot_flag > 3)
 		{
 			p_data->boot_flag = 0;
+			system("touch /tmp/in_backup_system");
 		}
 		else
 		{

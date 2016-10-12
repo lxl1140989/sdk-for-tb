@@ -8,7 +8,8 @@ echo timer > /sys/class/leds/wifi\:led/trigger
 
 
 #erase_boot_flag force
-cp /usr/sbin/set_sys_flag /tmp/set_sys_flag
+#cp /usr/sbin/set_sys_flag /tmp/set_sys_flag
+set_sys_flag auto
 
 # initialize defaults
 RAMFS_COPY_BIN=""	# extra programs for temporary ramfs root

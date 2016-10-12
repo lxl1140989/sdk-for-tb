@@ -239,9 +239,10 @@ do_upgrade() {
 	sys_flag=`hexdump -s 0x40000 -n 5 -C /dev/mmcblk0 | awk '{print $5}' | awk 'NR==1{print}'`
 	boot_flag=`hexdump -s 0x40000 -n 5 -C /dev/mmcblk0 | awk '{print $4}' | awk 'NR==1{print}'`
 	
-	echo sys_flag=$sys_flag boot_flag=$boot_flag
+#	echo sys_flag=$sys_flag boot_flag=$boot_flag
 	
-	if [ $boot_flag = "04" ];then
+#	if [ $boot_flag = "04" ];then
+	if [ -f /tmp/in_backup_system ]; then
 		v "in backup system"
 		if [ $sys_flag = "00" ]; then
 			v "upgrade the first system..."
@@ -274,7 +275,7 @@ do_upgrade() {
 		fi		
 	else
 		v "in normal system"
-		if [ $sys_flag = "00" ]; then
+		if [ $sys_flag != "00" ]; then
 			v "upgrade the second system..."
 			dd if=/tmp/fwupgrade of=/dev/mmcblk0 bs=1M seek=8 count=5 conv=fsync
 			[ $? -ne 0 ] && {
@@ -306,7 +307,7 @@ do_upgrade() {
 	fi
 	
 	v "set system flag auto..."
-	/tmp/set_sys_flag auto
+#	/tmp/set_sys_flag auto
 
 	v "Upgrade completed"
 	reboot -f
