@@ -3,6 +3,9 @@
 /etc/init.d/samba stop
 /etc/init.d/dm_router stop
 
+killall protectmusic
+killall wifimusic
+
 mnt_sta=$(grep SD-disk /proc/mounts)
 [ -n "$mnt_sta" ] && {
 	echo "format succeed"
